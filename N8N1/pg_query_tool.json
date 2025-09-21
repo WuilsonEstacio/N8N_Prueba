@@ -1,0 +1,102 @@
+{
+  "name": "pg_query_tool",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "sql"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4072e8ad-dd5c-407f-9992-951effd5f444",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{$json.sql}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d5f4fd02-5db3-4043-b99e-792715cf05dd",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "uDaMjhEc6tYEGxPg",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = items.map(i => i.json);\nreturn [{ rows, rowCount: rows.length }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "7e343d8b-d8b3-4351-a299-e795d37be206",
+      "name": "Code"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "sql": "SELECT 1;"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d6b22177-345e-421f-9d1b-d21490a8413d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cb5ff72c7582ead66e87ebd6fd57c0aaa70acae7ba39ccd71090a5c87a9ffb8b"
+  },
+  "id": "WRsTqk5x9wXYjMSs",
+  "tags": []
+}
